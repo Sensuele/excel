@@ -1,4 +1,11 @@
-import './module'
-import './scss/style.scss'
+import {Excel} from '@/component/excel/Excel'
+import './scss/index.scss'
 
-console.log('Working!')
+const excel = new Excel('#app', {
+  components: []
+});
+
+console.log('Excel', excel);
+
+
+
