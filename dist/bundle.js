@@ -63,6 +63,33 @@ __webpack_require__(/*! regenerator-runtime/runtime */ "../node_modules/regenera
 
 /***/ }),
 
+/***/ "./components/excel/Excel.js":
+/*!***********************************!*\
+  !*** ./components/excel/Excel.js ***!
+  \***********************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Excel": function() { return /* binding */ Excel; }
+/* harmony export */ });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var Excel = function Excel() {
+  _classCallCheck(this, Excel);
+
+  _defineProperty(this, '123', void 0);
+} // constructor(selector, options: {
+//   this.$el = document.querySelector(selector)
+//   this.components = options.components || []
+// })
+;
+
+/***/ }),
+
 /***/ "./index.js":
 /*!******************!*\
   !*** ./index.js ***!
@@ -71,51 +98,14 @@ __webpack_require__(/*! regenerator-runtime/runtime */ "../node_modules/regenera
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _module__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./module */ "./module.js");
-/* harmony import */ var _module__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_module__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _scss_style_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./scss/style.scss */ "./scss/style.scss");
+/* harmony import */ var _components_excel_Excel__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/excel/Excel */ "./components/excel/Excel.js");
+/* harmony import */ var _scss_index_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./scss/index.scss */ "./scss/index.scss");
 
 
-console.log('Working!');
-
-/***/ }),
-
-/***/ "./module.js":
-/*!*******************!*\
-  !*** ./module.js ***!
-  \*******************/
-/***/ (function() {
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
-console.log('Module.js');
-
-function start() {
-  return _start.apply(this, arguments);
-}
-
-function _start() {
-  _start = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-    return regeneratorRuntime.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            _context.next = 2;
-            return Promise.resolve();
-
-          case 2:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee);
-  }));
-  return _start.apply(this, arguments);
-}
-
-start();
+var excel = new _components_excel_Excel__WEBPACK_IMPORTED_MODULE_0__.Excel('#app', {
+  components: []
+});
+console.log('Excel', excel);
 
 /***/ }),
 
@@ -9175,9 +9165,9 @@ module.exports = __webpack_require__(/*! ../modules/_core */ "../node_modules/co
 
 /***/ }),
 
-/***/ "./scss/style.scss":
+/***/ "./scss/index.scss":
 /*!*************************!*\
-  !*** ./scss/style.scss ***!
+  !*** ./scss/index.scss ***!
   \*************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
@@ -9972,18 +9962,6 @@ try {
 /******/ 	}
 /******/ 	
 /************************************************************************/
-/******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	}();
-/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	!function() {
 /******/ 		// define getter functions for harmony exports

@@ -1,6 +1,7 @@
 export class Excel {
-  constructor(selector, options: {
-    this.$el = document.querySelector(selector)
-    this.components = options.components || []
-  })
+  '123'
+  // constructor(selector, options: {
+  //   this.$el = document.querySelector(selector)
+  //   this.components = options.components || []
+  // })
 }

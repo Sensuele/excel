@@ -1,4 +1,4 @@
-import {Excel} from '@/component/excel/Excel'
+import {Excel} from './components/excel/Excel'
 import './scss/index.scss'
 
 const excel = new Excel('#app', {
