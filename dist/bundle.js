@@ -92,8 +92,10 @@ var Excel = /*#__PURE__*/function () {
     key: "getRoot",
     value: function getRoot() {
       var $root = document.createElement('div');
+      $root.classList.add('excel');
       this.components.forEach(function (Component) {
-        var component = new Component();
+        var $el = document.createElement('div');
+        var component = new Component($el);
         $root.insertAdjacentHTML('beforeend', component.toHTML());
       });
       return $root;
@@ -144,6 +146,8 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 var Formula = /*#__PURE__*/function (_ExcelComponent) {
   _inherits(Formula, _ExcelComponent);
@@ -165,6 +169,8 @@ var Formula = /*#__PURE__*/function (_ExcelComponent) {
 
   return Formula;
 }(_core_ExcelComponent__WEBPACK_IMPORTED_MODULE_0__.ExcelComponent);
+
+_defineProperty(Formula, "className", 'excel__formula');
 
 /***/ }),
 
@@ -202,6 +208,8 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 var Header = /*#__PURE__*/function (_ExcelComponent) {
   _inherits(Header, _ExcelComponent);
@@ -223,6 +231,8 @@ var Header = /*#__PURE__*/function (_ExcelComponent) {
 
   return Header;
 }(_core_ExcelComponent__WEBPACK_IMPORTED_MODULE_0__.ExcelComponent);
+
+_defineProperty(Header, "className", 'excel__header');
 
 /***/ }),
 
@@ -260,6 +270,8 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 var Table = /*#__PURE__*/function (_ExcelComponent) {
   _inherits(Table, _ExcelComponent);
@@ -281,6 +293,8 @@ var Table = /*#__PURE__*/function (_ExcelComponent) {
 
   return Table;
 }(_core_ExcelComponent__WEBPACK_IMPORTED_MODULE_0__.ExcelComponent);
+
+_defineProperty(Table, "className", 'excel__table');
 
 /***/ }),
 
@@ -318,6 +332,8 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 var Toolbar = /*#__PURE__*/function (_ExcelComponent) {
   _inherits(Toolbar, _ExcelComponent);
@@ -340,6 +356,8 @@ var Toolbar = /*#__PURE__*/function (_ExcelComponent) {
   return Toolbar;
 }(_core_ExcelComponent__WEBPACK_IMPORTED_MODULE_0__.ExcelComponent);
 
+_defineProperty(Toolbar, "className", 'excel__toolbar');
+
 /***/ }),
 
 /***/ "./core/DomListener.js":
@@ -355,8 +373,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var DomListener = function DomListener() {
+var DomListener = function DomListener($root) {
   _classCallCheck(this, DomListener);
+
+  if (!$root) {
+    throw new Error("NO $root provided for DomListener");
+  }
+
+  this.$root = $root;
 };
 
 /***/ }),
