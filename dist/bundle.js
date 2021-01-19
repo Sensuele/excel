@@ -74,11 +74,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Excel": function() { return /* binding */ Excel; }
 /* harmony export */ });
+/* harmony import */ var _core_dom__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @core/dom */ "./core/dom.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 
 var Excel = /*#__PURE__*/function () {
   function Excel(selector, options) {
@@ -91,12 +93,14 @@ var Excel = /*#__PURE__*/function () {
   _createClass(Excel, [{
     key: "getRoot",
     value: function getRoot() {
-      var $root = document.createElement('div');
-      $root.classList.add('excel');
+      var $root = _core_dom__WEBPACK_IMPORTED_MODULE_0__.$.create('div', 'excel');
       this.components.forEach(function (Component) {
-        var $el = document.createElement('div');
+        // const $el = document.createElement('div')
+        // $el.classList.add(Component.className)
+        var $el = _core_dom__WEBPACK_IMPORTED_MODULE_0__.$.create('div', Component.className);
         var component = new Component($el);
-        $root.insertAdjacentHTML('beforeend', component.toHTML());
+        $el.innerHTML = component.toHTML();
+        $root.appendChild($el);
       });
       return $root;
     }
@@ -163,7 +167,7 @@ var Formula = /*#__PURE__*/function (_ExcelComponent) {
   _createClass(Formula, [{
     key: "toHTML",
     value: function toHTML() {
-      return '<h1>Formula</h1>';
+      return "\n      <div class=\"info\">fx</div>\n      <div class=\"input\" contenteditable spellcheck=\"false\"></div>\n    ";
     }
   }]);
 
@@ -225,7 +229,7 @@ var Header = /*#__PURE__*/function (_ExcelComponent) {
   _createClass(Header, [{
     key: "toHTML",
     value: function toHTML() {
-      return '<h1>header</h1>';
+      return "\n    <input type=\"text\" class=\"input\" value=\"\u041D\u043E\u0432\u0430\u044F \u0442\u0430\u0431\u043B\u0438\u0446\u0430\" />\n\n    <div>\n\n      <div class=\"button\">\n        <i class=\"material-icons\">delete</i>\n      </div>\n\n      <div class=\"button\">\n        <i class=\"material-icons\">exit_to_app</i>\n      </div>\n\n    </div>\n    ";
     }
   }]);
 
@@ -287,7 +291,7 @@ var Table = /*#__PURE__*/function (_ExcelComponent) {
   _createClass(Table, [{
     key: "toHTML",
     value: function toHTML() {
-      return '<h1>table</h1>';
+      return "\n    \n    <div class=\"row\">\n    ";
     }
   }]);
 
@@ -349,14 +353,14 @@ var Toolbar = /*#__PURE__*/function (_ExcelComponent) {
   _createClass(Toolbar, [{
     key: "toHTML",
     value: function toHTML() {
-      return '<h1>toolbar</h1>';
+      return "\n    \n        <div class=\"button\">\n        <i class=\"material-icons\">format_align_left</i>\n      </div>\n\n      <div class=\"button\">\n        <i class=\"material-icons\">format_align_center</i>\n      </div>\n\n      <div class=\"button\">\n        <i class=\"material-icons\">format_align_right</i>\n      </div>\n\n      <div class=\"button\">\n        <i class=\"material-icons\">format_bold</i>\n      </div>\n\n      <div class=\"button\">\n        <i class=\"material-icons\">format_italic</i>\n      </div>\n\n      <div class=\"button\">\n        <i class=\"material-icons\">format_underlined</i>\n      </div>\n    ";
     }
   }]);
 
   return Toolbar;
 }(_core_ExcelComponent__WEBPACK_IMPORTED_MODULE_0__.ExcelComponent);
 
-_defineProperty(Toolbar, "className", 'excel__toolbar');
+_defineProperty(Toolbar, "className", "excel__toolbar");
 
 /***/ }),
 
@@ -441,6 +445,40 @@ var ExcelComponent = /*#__PURE__*/function (_DomListener) {
 
   return ExcelComponent;
 }(_core_DomListener__WEBPACK_IMPORTED_MODULE_0__.DomListener);
+
+/***/ }),
+
+/***/ "./core/dom.js":
+/*!*********************!*\
+  !*** ./core/dom.js ***!
+  \*********************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "$": function() { return /* binding */ $; }
+/* harmony export */ });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Dom = function Dom() {
+  _classCallCheck(this, Dom);
+};
+
+function $() {
+  return new Dom();
+}
+
+$.create = function (tagName) {
+  var classes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+  var el = document.createElement(tagName);
+
+  if (classes) {
+    el.classList.add(classes);
+  }
+
+  return el;
+};
 
 /***/ }),
 

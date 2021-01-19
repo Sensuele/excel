@@ -20,7 +20,8 @@
     "webpack-dev-server": "^3.11.1"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.8.3"
+    "@babel/polyfill": "^7.8.3",
+    "material-design-icons": "^3.0.1"
   },
   "name": "excel",
   "version": "1.0.0",

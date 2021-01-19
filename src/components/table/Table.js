@@ -4,6 +4,9 @@ export class Table extends ExcelComponent {
   static className = 'excel__table'
 
   toHTML() {
-    return '<h1>table</h1>'
+    return `
+    
+    <div class="row">
+    `
   }
 }
