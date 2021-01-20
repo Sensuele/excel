@@ -86,7 +86,7 @@ var Excel = /*#__PURE__*/function () {
   function Excel(selector, options) {
     _classCallCheck(this, Excel);
 
-    this.$el = document.querySelector(selector);
+    this.$el = (0,_core_dom__WEBPACK_IMPORTED_MODULE_0__.$)(selector);
     this.components = options.components || [];
   }
 
@@ -99,8 +99,8 @@ var Excel = /*#__PURE__*/function () {
         // $el.classList.add(Component.className)
         var $el = _core_dom__WEBPACK_IMPORTED_MODULE_0__.$.create('div', Component.className);
         var component = new Component($el);
-        $el.innerHTML = component.toHTML();
-        $root.appendChild($el);
+        $el.html(component.toHTML());
+        $root.append($el);
       });
       return $root;
     }
@@ -461,23 +461,66 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Dom = function Dom() {
-  _classCallCheck(this, Dom);
-};
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function $() {
-  return new Dom();
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Dom = /*#__PURE__*/function () {
+  function Dom(selector) {
+    _classCallCheck(this, Dom);
+
+    this.$el = typeof selector === "string" ? document.querySelector(selector) : selector;
+  }
+
+  _createClass(Dom, [{
+    key: "html",
+    value: function html(_html) {
+      if (typeof _html === 'string') {
+        this.$el.innerHTML = _html;
+        return this;
+      }
+
+      return this.$el.outerHTML.trim();
+    }
+  }, {
+    key: "clear",
+    value: function clear() {
+      this.html('');
+      return this;
+    }
+  }, {
+    key: "append",
+    value: function append(node) {
+      if (node instanceof Dom) {
+        node = node.$el;
+      }
+
+      if (Element.prototype.append) {
+        this.$el.append(node);
+      } else {
+        this.$el.appendChild(node);
+      }
+
+      return this;
+    }
+  }]);
+
+  return Dom;
+}();
+
+function $(selector) {
+  return new Dom(selector);
 }
 
 $.create = function (tagName) {
-  var classes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+  var classes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
   var el = document.createElement(tagName);
 
   if (classes) {
     el.classList.add(classes);
   }
 
-  return el;
+  return $(el);
 };
 
 /***/ }),
