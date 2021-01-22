@@ -8,6 +8,6 @@
 
 },
 "extends": [
-  "eslint: recommended", " google"
+  "eslint:recommended", "google"
 ]
 }

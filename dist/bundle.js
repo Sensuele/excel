@@ -94,13 +94,14 @@ var Excel = /*#__PURE__*/function () {
     key: "getRoot",
     value: function getRoot() {
       var $root = _core_dom__WEBPACK_IMPORTED_MODULE_0__.$.create('div', 'excel');
-      this.components.forEach(function (Component) {
+      this.components = this.components.map(function (Component) {
         // const $el = document.createElement('div')
         // $el.classList.add(Component.className)
         var $el = _core_dom__WEBPACK_IMPORTED_MODULE_0__.$.create('div', Component.className);
         var component = new Component($el);
         $el.html(component.toHTML());
         $root.append($el);
+        return component;
       });
       return $root;
     }
@@ -158,10 +159,13 @@ var Formula = /*#__PURE__*/function (_ExcelComponent) {
 
   var _super = _createSuper(Formula);
 
-  function Formula() {
+  function Formula($root) {
     _classCallCheck(this, Formula);
 
-    return _super.apply(this, arguments);
+    return _super.call(this, $root, {
+      name: 'Formula',
+      listeners: ['input']
+    });
   }
 
   _createClass(Formula, [{
@@ -377,15 +381,34 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var DomListener = function DomListener($root) {
-  _classCallCheck(this, DomListener);
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-  if (!$root) {
-    throw new Error("NO $root provided for DomListener");
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var DomListener = /*#__PURE__*/function () {
+  function DomListener($root) {
+    var listeners = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+
+    _classCallCheck(this, DomListener);
+
+    if (!$root) {
+      throw new Error("NO $root provided for DomListener");
+    }
+
+    this.$root = $root;
+    this.listeners = listeners;
   }
 
-  this.$root = $root;
-};
+  _createClass(DomListener, [{
+    key: "initDOMListeners",
+    value: function initDOMListeners() {}
+  }, {
+    key: "removeDOMListeners",
+    value: function removeDOMListeners() {}
+  }]);
+
+  return DomListener;
+}();
 
 /***/ }),
 
@@ -429,17 +452,24 @@ var ExcelComponent = /*#__PURE__*/function (_DomListener) {
 
   var _super = _createSuper(ExcelComponent);
 
-  function ExcelComponent() {
+  function ExcelComponent($root) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
     _classCallCheck(this, ExcelComponent);
 
-    return _super.apply(this, arguments);
-  }
+    return _super.call(this, $root, options.listeners);
+  } // return template of component
+
 
   _createClass(ExcelComponent, [{
     key: "toHtml",
-    // return template of component
     value: function toHtml() {
       return '';
+    }
+  }, {
+    key: "init",
+    value: function init() {
+      this.initDOMListeners();
     }
   }]);
 
