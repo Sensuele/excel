@@ -109,6 +109,9 @@ var Excel = /*#__PURE__*/function () {
     key: "render",
     value: function render() {
       this.$el.append(this.getRoot());
+      this.components.forEach(function (component) {
+        return component.init();
+      });
     }
   }]);
 
@@ -164,7 +167,7 @@ var Formula = /*#__PURE__*/function (_ExcelComponent) {
 
     return _super.call(this, $root, {
       name: 'Formula',
-      listeners: ['input']
+      listeners: ['input', 'click']
     });
   }
 
@@ -379,11 +382,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "DomListener": function() { return /* binding */ DomListener; }
 /* harmony export */ });
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "./core/utils.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 
 var DomListener = /*#__PURE__*/function () {
   function DomListener($root) {
@@ -401,14 +406,31 @@ var DomListener = /*#__PURE__*/function () {
 
   _createClass(DomListener, [{
     key: "initDOMListeners",
-    value: function initDOMListeners() {}
+    value: function initDOMListeners() {
+      var _this = this;
+
+      this.listeners.forEach(function (listener) {
+        var method = getMethodName(listener);
+
+        if (!_this[method]) {
+          var name = _this.name || '';
+          throw new Error("Method ".concat(method, " is not implemented in ").concat(name, " Component"));
+        }
+
+        _this.root.on(listener, _this[method].bind(_this));
+      });
+    }
   }, {
     key: "removeDOMListeners",
     value: function removeDOMListeners() {}
   }]);
 
   return DomListener;
-}();
+}(); //Input => OnInput
+
+function getMethodName(eventName) {
+  return "on" + (0,_utils__WEBPACK_IMPORTED_MODULE_0__.capitalize)(eventName);
+}
 
 /***/ }),
 
@@ -453,11 +475,15 @@ var ExcelComponent = /*#__PURE__*/function (_DomListener) {
   var _super = _createSuper(ExcelComponent);
 
   function ExcelComponent($root) {
+    var _this;
+
     var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
     _classCallCheck(this, ExcelComponent);
 
-    return _super.call(this, $root, options.listeners);
+    _this = _super.call(this, $root, options.listeners);
+    _this.name = options.name || '';
+    return _this;
   } // return template of component
 
 
@@ -519,6 +545,11 @@ var Dom = /*#__PURE__*/function () {
       return this;
     }
   }, {
+    key: "on",
+    value: function on(eventType, callback) {
+      this.$el.addEventListener(eventType, callback);
+    }
+  }, {
     key: "append",
     value: function append(node) {
       if (node instanceof Dom) {
@@ -552,6 +583,27 @@ $.create = function (tagName) {
 
   return $(el);
 };
+
+/***/ }),
+
+/***/ "./core/utils.js":
+/*!***********************!*\
+  !*** ./core/utils.js ***!
+  \***********************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "capitalize": function() { return /* binding */ capitalize; }
+/* harmony export */ });
+function capitalize(string) {
+  if (typeof string !== 'string') {
+    return '';
+  }
+
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 /***/ }),
 
