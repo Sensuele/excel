@@ -259,6 +259,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "Table": function() { return /* binding */ Table; }
 /* harmony export */ });
 /* harmony import */ var _core_ExcelComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @core/ExcelComponent */ "./core/ExcelComponent.js");
+/* harmony import */ var _table_template__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./table.template */ "./components/table/table.template.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -284,6 +285,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
+
 var Table = /*#__PURE__*/function (_ExcelComponent) {
   _inherits(Table, _ExcelComponent);
 
@@ -298,7 +300,7 @@ var Table = /*#__PURE__*/function (_ExcelComponent) {
   _createClass(Table, [{
     key: "toHTML",
     value: function toHTML() {
-      return "\n    \n    <div class=\"row\">\n    ";
+      return (0,_table_template__WEBPACK_IMPORTED_MODULE_1__.createTable)();
     }
   }]);
 
@@ -306,6 +308,54 @@ var Table = /*#__PURE__*/function (_ExcelComponent) {
 }(_core_ExcelComponent__WEBPACK_IMPORTED_MODULE_0__.ExcelComponent);
 
 _defineProperty(Table, "className", 'excel__table');
+
+/***/ }),
+
+/***/ "./components/table/table.template.js":
+/*!********************************************!*\
+  !*** ./components/table/table.template.js ***!
+  \********************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "createTable": function() { return /* binding */ createTable; }
+/* harmony export */ });
+var CODES = {
+  A: 65,
+  Z: 90
+};
+
+function createCell() {
+  return "\n    <div class=\"cell\" contenteditable>B2</div>\n  ";
+}
+
+function createCol(col) {
+  return "\n    <div class=\"column\">\n      ".concat(col, "\n    </div>\n  ");
+}
+
+function createRow(content) {
+  return "\n    <div class=\"row\">\n      <div class=\"row-info\"></div>\n      <div class=\"row-data\">".concat(content, "</div>\n    </div>\n  ");
+}
+
+function createTable() {
+  var rowsCount = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 15;
+  var colsCount = CODES.Z - CODES.A + 1;
+  var rows = [];
+  var cols = new Array(colsCount).fill("").map(function (el, index) {
+    return String.fromCharCode(CODES.A + index);
+  }).map(function (el) {
+    return createCol(el);
+  }).join('');
+  rows.push(createRow(cols));
+
+  for (var i = 0; i < rowsCount; i++) {
+    rows.push(createRow());
+  }
+
+  return rows.join("");
+}
 
 /***/ }),
 
@@ -351,10 +401,13 @@ var Toolbar = /*#__PURE__*/function (_ExcelComponent) {
 
   var _super = _createSuper(Toolbar);
 
-  function Toolbar() {
+  function Toolbar($root) {
     _classCallCheck(this, Toolbar);
 
-    return _super.apply(this, arguments);
+    return _super.call(this, $root, {
+      name: 'Toolbar',
+      listener: ['click']
+    });
   }
 
   _createClass(Toolbar, [{
@@ -362,6 +415,9 @@ var Toolbar = /*#__PURE__*/function (_ExcelComponent) {
     value: function toHTML() {
       return "\n    \n        <div class=\"button\">\n        <i class=\"material-icons\">format_align_left</i>\n      </div>\n\n      <div class=\"button\">\n        <i class=\"material-icons\">format_align_center</i>\n      </div>\n\n      <div class=\"button\">\n        <i class=\"material-icons\">format_align_right</i>\n      </div>\n\n      <div class=\"button\">\n        <i class=\"material-icons\">format_bold</i>\n      </div>\n\n      <div class=\"button\">\n        <i class=\"material-icons\">format_italic</i>\n      </div>\n\n      <div class=\"button\">\n        <i class=\"material-icons\">format_underlined</i>\n      </div>\n    ";
     }
+  }, {
+    key: "onClick",
+    value: function onClick(event) {}
   }]);
 
   return Toolbar;
@@ -417,12 +473,22 @@ var DomListener = /*#__PURE__*/function () {
           throw new Error("Method ".concat(method, " is not implemented in ").concat(name, " Component"));
         }
 
-        _this.root.on(listener, _this[method].bind(_this));
+        _this[method] = _this[method].bind(_this);
+
+        _this.root.on(listener, _this[method]);
       });
     }
   }, {
     key: "removeDOMListeners",
-    value: function removeDOMListeners() {}
+    value: function removeDOMListeners() {
+      var _this2 = this;
+
+      this.listeners.forEach(function (listener) {
+        var method = getMethodName(listener);
+
+        _this2.root.off(listener, _this2[method]);
+      });
+    }
   }]);
 
   return DomListener;
@@ -497,6 +563,11 @@ var ExcelComponent = /*#__PURE__*/function (_DomListener) {
     value: function init() {
       this.initDOMListeners();
     }
+  }, {
+    key: "destroy",
+    value: function destroy() {
+      this.removeDOMListeners();
+    }
   }]);
 
   return ExcelComponent;
@@ -548,6 +619,11 @@ var Dom = /*#__PURE__*/function () {
     key: "on",
     value: function on(eventType, callback) {
       this.$el.addEventListener(eventType, callback);
+    }
+  }, {
+    key: "off",
+    value: function off(eventType, callback) {
+      this.$el.removeEventListener(eventType, callback);
     }
   }, {
     key: "append",
