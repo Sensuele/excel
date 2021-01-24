@@ -327,31 +327,32 @@ var CODES = {
   Z: 90
 };
 
-function createCell() {
-  return "\n    <div class=\"cell\" contenteditable>B2</div>\n  ";
+function toCell() {
+  return "\n    <div class=\"cell\" contenteditable></div>\n  ";
 }
 
-function createCol(col) {
+function toColumn(col) {
   return "\n    <div class=\"column\">\n      ".concat(col, "\n    </div>\n  ");
 }
 
-function createRow(content) {
-  return "\n    <div class=\"row\">\n      <div class=\"row-info\"></div>\n      <div class=\"row-data\">".concat(content, "</div>\n    </div>\n  ");
+function createRow(index, content) {
+  return "\n    <div class=\"row\">\n      <div class=\"row-info\">".concat(index ? index : '', "</div>\n      <div class=\"row-data\">").concat(content, "</div>\n    </div>\n  ");
+}
+
+function toChar(_, index) {
+  return String.fromCharCode(CODES.A + index);
 }
 
 function createTable() {
   var rowsCount = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 15;
   var colsCount = CODES.Z - CODES.A + 1;
   var rows = [];
-  var cols = new Array(colsCount).fill("").map(function (el, index) {
-    return String.fromCharCode(CODES.A + index);
-  }).map(function (el) {
-    return createCol(el);
-  }).join('');
-  rows.push(createRow(cols));
+  var cols = new Array(colsCount).fill("").map(toChar).map(toColumn).join("");
+  rows.push(createRow(null, cols));
 
   for (var i = 0; i < rowsCount; i++) {
-    rows.push(createRow());
+    var cells = new Array(colsCount).fill('').map(toCell).join('');
+    rows.push(createRow(i + 1, cells));
   }
 
   return rows.join("");
