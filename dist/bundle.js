@@ -344,7 +344,7 @@ function toChar(_, index) {
 }
 
 function createTable() {
-  var rowsCount = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 15;
+  var rowsCount = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 40;
   var colsCount = CODES.Z - CODES.A + 1;
   var rows = [];
   var cols = new Array(colsCount).fill("").map(toChar).map(toColumn).join("");
